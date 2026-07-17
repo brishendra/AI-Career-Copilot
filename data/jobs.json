@@ -1,0 +1,15 @@
+[
+    {
+        "id": 1,
+        "title": "Senior IT Program Manager",
+        "company": "Microsoft",
+        "location": "Remote",
+        "source": "LinkedIn",
+        "url": "https://linkedin.com/job/sample123",
+        "description": "Cloud transformation leadership role.",
+        "dateFound": "2026-07-17T10:22:55.358133",
+        "status": "REVIEW",
+        "matchScore": 90,
+        "analysisCompleted": true
+    }
+]
