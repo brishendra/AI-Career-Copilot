@@ -2,15 +2,15 @@ import json
 from datetime import datetime
 
 
-
 JOBS_FILE = "data/jobs.json"
+MATCH_REPORT_FILE = "data/match_report.json"
 
 
 
-def load_jobs():
+def load_json(file_path):
 
     with open(
-        JOBS_FILE,
+        file_path,
         "r",
         encoding="utf-8"
     ) as file:
@@ -22,16 +22,31 @@ def load_jobs():
 def print_header():
 
     print()
-    print("=" * 50)
-    print("        AI CAREER COPILOT DASHBOARD")
-    print("=" * 50)
+    print("=" * 60)
+    print("             AI CAREER COPILOT DASHBOARD")
+    print("=" * 60)
     print()
+
+
+
+def load_match_report():
+
+    try:
+
+        return load_json(
+            MATCH_REPORT_FILE
+        )
+
+    except FileNotFoundError:
+
+        return {}
 
 
 
 def display_summary(jobs):
 
     total = len(jobs)
+
 
     analyzed = len(
         [
@@ -61,12 +76,95 @@ def display_summary(jobs):
 
 
     print("SUMMARY")
-    print("-" * 50)
+    print("-" * 60)
 
-    print(f"Total Jobs: {total}")
-    print(f"Analyzed: {analyzed}")
-    print(f"Ready to Apply: {apply_jobs}")
-    print(f"Need Review: {review_jobs}")
+    print(f"Total Jobs       : {total}")
+    print(f"Analyzed Jobs    : {analyzed}")
+    print(f"Ready To Apply   : {apply_jobs}")
+    print(f"Needs Review     : {review_jobs}")
+
+    print()
+
+
+
+def display_match_details(report):
+
+    if not report:
+
+        return
+
+
+    print("AI RECOMMENDATION")
+    print("-" * 60)
+
+
+    print(
+        f"Recommendation : {report.get('recommendation')}"
+    )
+
+
+    print(
+        f"Match Score    : {report.get('matchScore')}%"
+    )
+
+
+    print()
+
+
+    print("Summary:")
+
+    print(
+        report.get(
+            "summary",
+            "Not available"
+        )
+    )
+
+
+    print()
+
+
+    print("Matching Strengths:")
+
+    for item in report.get(
+        "matchingStrengths",
+        []
+    ):
+
+        print(
+            f"  ✓ {item}"
+        )
+
+
+    print()
+
+
+    print("Skill Gaps:")
+
+    for item in report.get(
+        "skillGaps",
+        []
+    ):
+
+        print(
+            f"  ⚠ {item}"
+        )
+
+
+    print()
+
+
+    print("Interview Focus Areas:")
+
+    for item in report.get(
+        "interviewFocusAreas",
+        []
+    ):
+
+        print(
+            f"  • {item}"
+        )
+
 
     print()
 
@@ -75,52 +173,65 @@ def display_summary(jobs):
 def display_jobs(jobs):
 
     print("JOB PIPELINE")
-    print("-" * 50)
+    print("-" * 60)
 
 
     for job in jobs:
 
 
+        print()
+
         print(
-            f"""
-Title:
-{job.get("title")}
+            f"{job.get('title')}"
+        )
 
-Company:
-{job.get("company")}
 
-Location:
-{job.get("location")}
+        print(
+            f"Company : {job.get('company')}"
+        )
 
-Status:
-{job.get("status")}
 
-Match Score:
-{job.get("matchScore")}
+        print(
+            f"Status  : {job.get('status')}"
+        )
 
-Source:
-{job.get("source")}
 
-URL:
-{job.get("url")}
+        print(
+            f"Score   : {job.get('matchScore')}%"
+        )
 
-{"-" * 50}
-"""
+
+        print(
+            f"Source  : {job.get('source')}"
+        )
+
+
+        print(
+            "-" * 60
         )
 
 
 
 def run_dashboard():
 
-    jobs = load_jobs()
+    jobs = load_json(
+        JOBS_FILE
+    )
+
+
+    report = load_match_report()
 
 
     print_header()
 
 
     print(
-        f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        "Generated:",
+        datetime.now().strftime(
+            "%Y-%m-%d %H:%M:%S"
+        )
     )
+
 
     print()
 
@@ -132,6 +243,13 @@ def run_dashboard():
 
     display_jobs(
         jobs
+    )
+
+
+    print()
+
+    display_match_details(
+        report
     )
 
 
