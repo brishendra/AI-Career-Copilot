@@ -3,7 +3,6 @@ from datetime import datetime
 
 
 JOBS_FILE = "data/jobs.json"
-MATCH_REPORT_FILE = "data/match_report.json"
 
 
 
@@ -29,13 +28,24 @@ def print_header():
 
 
 
-def load_match_report():
+def load_match_report(job):
+
+    report_file = job.get(
+        "matchReport"
+    )
+
+
+    if not report_file:
+
+        return {}
+
 
     try:
 
         return load_json(
-            MATCH_REPORT_FILE
+            report_file
         )
+
 
     except FileNotFoundError:
 
@@ -91,7 +101,12 @@ def display_match_details(report):
 
     if not report:
 
+        print(
+            "AI Recommendation: Not available"
+        )
+
         return
+
 
 
     print("AI RECOMMENDATION")
@@ -126,6 +141,7 @@ def display_match_details(report):
 
     print("Matching Strengths:")
 
+
     for item in report.get(
         "matchingStrengths",
         []
@@ -141,6 +157,7 @@ def display_match_details(report):
 
     print("Skill Gaps:")
 
+
     for item in report.get(
         "skillGaps",
         []
@@ -155,6 +172,7 @@ def display_match_details(report):
 
 
     print("Interview Focus Areas:")
+
 
     for item in report.get(
         "interviewFocusAreas",
@@ -181,8 +199,9 @@ def display_jobs(jobs):
 
         print()
 
+
         print(
-            f"{job.get('title')}"
+            job.get("title")
         )
 
 
@@ -206,6 +225,19 @@ def display_jobs(jobs):
         )
 
 
+        print()
+
+
+        report = load_match_report(
+            job
+        )
+
+
+        display_match_details(
+            report
+        )
+
+
         print(
             "-" * 60
         )
@@ -217,9 +249,6 @@ def run_dashboard():
     jobs = load_json(
         JOBS_FILE
     )
-
-
-    report = load_match_report()
 
 
     print_header()
@@ -243,13 +272,6 @@ def run_dashboard():
 
     display_jobs(
         jobs
-    )
-
-
-    print()
-
-    display_match_details(
-        report
     )
 
 
