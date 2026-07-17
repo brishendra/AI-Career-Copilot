@@ -2,3 +2,7 @@
 __pycache__/
 .env
 .venv/
+
+# Personal career documents
+documents/resume/
+data/resume_text.txt
