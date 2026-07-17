@@ -4,5 +4,5 @@ __pycache__/
 .venv/
 
 # Personal career documents
-documents/resume/
+documents/
 data/resume_text.txt
