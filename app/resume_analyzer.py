@@ -1,3 +1,6 @@
+from skills_database import SKILLS
+
+
 def analyze_resume(text):
     """
     Analyze extracted resume text.
@@ -9,29 +12,35 @@ def analyze_resume(text):
         "experience": None
     }
 
-    # Certification detection
-    if "PMP" in text:
-        profile["certifications"].append("PMP")
-
-    if "ITIL" in text:
-        profile["certifications"].append("ITIL")
-
-    # Skill detection
-    skills_list = [
-        "Program Management",
-        "Cloud",
-        "Infrastructure",
-        "Agile",
-        "Stakeholder Management"
+    # Detect certifications
+    certifications = [
+        "PMP",
+        "ITIL",
+        "AWS Certified",
+        "Azure"
     ]
 
-    for skill in skills_list:
+    for certification in certifications:
+        if certification.lower() in text.lower():
+            profile["certifications"].append(certification)
+
+    # Detect skills dynamically
+    for skill in SKILLS:
         if skill.lower() in text.lower():
             profile["skills"].append(skill)
 
-    # Experience detection
-    if "17 years" in text:
-        profile["experience"] = "17 years"
+    # Detect experience
+    experience_keywords = [
+        "17 years",
+        "16 years",
+        "15 years",
+        "10 years"
+    ]
+
+    for experience in experience_keywords:
+        if experience in text:
+            profile["experience"] = experience
+            break
 
     return profile
 
@@ -46,7 +55,7 @@ if __name__ == "__main__":
     print("Resume Analysis")
     print("----------------")
 
-    print("Experience:")
+    print("\nExperience:")
     print(resume_profile["experience"])
 
     print("\nCertifications:")
