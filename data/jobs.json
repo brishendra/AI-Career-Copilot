@@ -10,7 +10,8 @@
         "dateFound": "2026-07-17T10:22:55.358133",
         "status": "REVIEW",
         "matchScore": 90,
-        "analysisCompleted": true
+        "analysisCompleted": true,
+        "matchReport": "data/reports/job_1_match.json"
     },
     {
         "id": 2,
@@ -23,6 +24,7 @@
         "dateFound": "2026-07-17T10:51:32.857439",
         "status": "REVIEW",
         "matchScore": 90,
-        "analysisCompleted": true
+        "analysisCompleted": true,
+        "matchReport": "data/reports/job_2_match.json"
     }
 ]
