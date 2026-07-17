@@ -17,47 +17,54 @@ def clean_json_response(response):
     return cleaned.strip()
 
 
-def analyze_resume_with_ai(resume_text):
+def analyze_job_with_ai(job_text):
     """
-    Analyze resume using local AI model.
+    Analyze a job description using the local AI model.
     """
 
     prompt = f"""
 You are an expert technical recruiter.
 
-Analyze this resume and return ONLY valid JSON.
+Analyze the following job description.
 
+Return ONLY valid JSON.
 Do not include markdown.
 Do not include explanations.
 
 Extract:
 
-- yearsOfExperience
-- jobRoles
-- technicalSkills
-- leadershipSkills
+- jobTitle
+- company
+- location
+- remoteStatus
+- requiredExperience
+- requiredSkills
+- preferredSkills
 - certifications
-- majorAchievements
+- responsibilities
+- atsKeywords
 
+Job Description:
 
-Resume:
-
-{resume_text}
+{job_text}
 """
 
     response = ask_ai(prompt)
 
-    cleaned_response = clean_json_response(
-        response
-    )
+    print("\nRAW AI RESPONSE:")
+    print(response)
+
+    cleaned_response = clean_json_response(response)
+
+    print("\nCLEANED RESPONSE:")
+    print(cleaned_response)
 
     try:
-
-        profile = json.loads(
-            cleaned_response
-        )
+        profile = json.loads(cleaned_response)
 
     except json.JSONDecodeError:
+
+        print("\nAI returned invalid JSON.")
 
         profile = {
             "error": "Invalid AI response",
@@ -69,7 +76,7 @@ Resume:
 
 def save_profile(profile, output_file):
     """
-    Save AI profile as JSON.
+    Save the AI-generated job profile as JSON.
     """
 
     with open(
@@ -88,32 +95,28 @@ def save_profile(profile, output_file):
 if __name__ == "__main__":
 
     with open(
-        "data/resume_text.txt",
+        "documents/job_descriptions/sample_job.txt",
         "r",
         encoding="utf-8"
     ) as file:
 
-        resume_text = file.read()
+        job_text = file.read()
 
-
-    resume_profile = analyze_resume_with_ai(
-        resume_text
-    )
-
+    job_profile = analyze_job_with_ai(job_text)
 
     save_profile(
-        resume_profile,
-        "data/resume_profile.json"
+        job_profile,
+        "data/job_profile.json"
     )
 
-
-    print(
-        "AI Resume Profile saved."
-    )
+    print("\nAI Job Profile")
+    print("----------------")
 
     print(
         json.dumps(
-            resume_profile,
+            job_profile,
             indent=4
         )
     )
+
+    print("\nJob profile saved to: data/job_profile.json")
